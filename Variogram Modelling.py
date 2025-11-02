@@ -33,8 +33,8 @@ def spherical_model(C, a, C0, h):
 
 
 C = sample_variance(data, sample_mean(data))  # sill value
-a = 4  # range
-C0 = 0  # nugget effect
+a = int(input('Enter range:'))
+C0 = float(input('Enter nugget effect:'))  # nugget effect
 
 lags = list(range(0, 6))
 exp_variogram = [variogram(data, h) if h != 0 else 0 for h in lags]
@@ -48,9 +48,9 @@ plt.axhline(y=C + C0, color='gray', linestyle=':', label='Sill (C + C₀)')
 plt.axhline(y=C0, color='orange', linestyle=':', label='Nugget (C₀)')
 plt.axvline(x=a, color='green', linestyle=':', label='Range (a)')
 
-plt.xlim(0, 5)
-plt.ylim(0, 11)               
-plt.yticks(range(0, 12, 1))
+plt.xlim(0, a + 2)
+plt.ylim(0, int(C0) + 11)               
+plt.yticks(range(0, int(C0) + 12, 1))
 
 plt.title("Experimental vs. Spherical Variogram")
 plt.xlabel("Lag Distance (h)")
