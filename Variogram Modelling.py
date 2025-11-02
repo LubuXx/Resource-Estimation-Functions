@@ -33,7 +33,7 @@ def spherical_model(C, a, C0, h):
 
 
 C = sample_variance(data, sample_mean(data))  # sill value
-a = int(input('Enter range:'))
+a = int(input('Enter range:')) # range
 C0 = float(input('Enter nugget effect:'))  # nugget effect
 
 lags = list(range(0, 6))
