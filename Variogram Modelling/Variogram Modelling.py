@@ -21,8 +21,9 @@ def variogram(data, distance):
     return total / (2 * (n - distance))
 
 def spherical_model(C, a, C0, h):
+    """Spherical model with nugget effect C0 and range a"""
     if h == 0:
-        return 0 
+        return C0
 
     elif h <= a:
         return C0 + C * ((1.5 * (h / a)) - 0.5 * (h / a) ** 3)
@@ -30,23 +31,26 @@ def spherical_model(C, a, C0, h):
     else:
         return C0 + C
 
-C = sample_variance(data, sample_mean(data)) # Sill Value
-a = 4  # Range
-C0 = 0  # Nugget Effect
+C = sample_variance(data, sample_mean(data))  # sill value
+a = int(input('Enter range (a): ')) # range
+C0 = float(input('Enter nugget effect (C0): ')) # nugget effect
 
-lags = list(range(0, 6)) 
+lags = list(range(0, int(input("Enter maximum lag distance: ")) + 1))
 
 exp_variogram = [variogram(data, h) if h != 0 else 0 for h in lags]
 theoretical_variogram = [spherical_model(C, a, C0, h) for h in lags]
 
-
-plt.figure(figsize=(8, 5))
+plt.figure(figsize=(max(8, len(lags) * 1.2), 5))
 plt.plot(lags, exp_variogram, marker='o', label='Experimental Variogram', color='b')
 plt.plot(lags, theoretical_variogram, marker='s', linestyle='--', label='Spherical Model', color='r')
 
-plt.xlim(0, 5)
-plt.ylim(0, 11)
-plt.yticks(range(0, 11, 1))
+plt.axhline(y=C + C0, color='gray', linestyle=':', label='Sill (C + C₀)')
+plt.axhline(y=C0, color='orange', linestyle=':', label='Nugget (C₀)')
+plt.axvline(x=a, color='green', linestyle=':', label='Range (a)')
+
+plt.xlim(0, max(lags) + 1)
+plt.ylim(0, max(C + C0, max(exp_variogram)) + 2)
+plt.yticks(range(0, int(max(C + C0, max(exp_variogram))) + 3, 1))
 
 plt.title("Experimental vs. Spherical Variogram")
 plt.xlabel("Lag Distance (h)")
