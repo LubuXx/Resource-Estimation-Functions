@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
-# The distance between nearby data is 1 meter. The sill value (C) is sample variance.
-# The experimental model fits with spherical model.
+# The distance between nearby data is 1 meter. The sill value (C) is the sample variance.
+# The experimental model fits with the spherical model.
 data = [2, 3, 3, 7, 7, 7, 7, 9, 9]
 
 def sample_mean(data):
@@ -9,21 +9,26 @@ def sample_mean(data):
 
 def sample_variance(data, mean):
     total = sum((i - mean) ** 2 for i in data)
+    
     return total / (len(data) - 1)
 
 def variogram(data, distance):
     total = 0
     n = len(data)
+    
     for i in range(n - distance):
         total += (data[i] - data[i + distance]) ** 2
+        
     return total / (2 * (n - distance))
 
 def spherical_model(C, a, C0, h):
     """Spherical model with nugget effect C0 and range a"""
     if h == 0:
         return C0
+        
     elif h <= a:
         return C0 + C * ((1.5 * (h / a)) - 0.5 * (h / a) ** 3)
+        
     else:
         return C0 + C
 
