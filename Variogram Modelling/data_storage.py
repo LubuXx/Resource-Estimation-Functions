@@ -1,15 +1,18 @@
-# data_holder.py
+datasets = {
+    "Set_1" : [2, 3, 3, 9, 7, 7, 7, 9, 7],
+    "Set_2" : [2, 4, 6, 16, 18, 12, 10, 20, 14],
+    "Set_3" : [1, 5, 5, 6, 6, 8, 10, 11, 11]
+}
 
-class DataHolder:
-    def __init__(self, data1, data2):
-        self.data1 = data1
-        self.data2 = data2
+def list_datasets():
+    """List all available datasets."""
+    print('\nCurren dataset:')
 
-    def show_data(self):
-        print("Data 1:", self.data1)
-        print("Data 2:", self.data2)
+    for i, name in enumerate(datasets.keys(), 1):
+        print(f"{i}, {name}")
 
-north_south = [2, 3, 3, 9, 7, 7, 7, 7, 9]
-east_west = [3, 4, 5, 7, 8, 9, 9, 10, 11]
+    print()
 
-data_object = DataHolder(north_south, east_west)
+def get_dataset(name):
+    """Return the dataset with name."""
+    return datasets.get(name, None)
