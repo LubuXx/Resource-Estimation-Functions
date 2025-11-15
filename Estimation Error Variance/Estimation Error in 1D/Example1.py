@@ -4,7 +4,7 @@ and want to estimate the average thickness value of the
 drive AB from the measured value (The G is located between 
 AB drive.)
 """
-
+# Values:
 print("\nThe distance and thickness values.")
 thicknessOfG = float(input('Enter the thickness of G:'))
 distance1 = float(input('Enter the distance between AG:'))
@@ -18,11 +18,12 @@ if total_distance != "":
     Nugget = float(input('Enter the Nugget Effect:'))
     Range = float(input('Enter the Range:'))
 
+# Model:
 if (Sill and Nugget and Range) != "":
     print("\nSelect a model type:")
     print("\nFor Spherical Mode, type: spherical_model")
     print("For Linear Mode, type: linear_model")
-    print("\n----------------------------")
+    print("----------------------------")
 
     model = str(input('Choose your model type given above:'))
 
@@ -100,7 +101,16 @@ def auxiliary_function_f_linear_model(C0, C, td):
 
 # A 95% confidence interval for the true mean thickness:
 def probability_distribution_function(sigma, thickness):
-    return f'({(thickness - 1.96*sigma):.2f} < Z < {(thickness + (1.96*sigma)):.2f}) = 0.95'
+    lower_bound = thickness - 1.96*sigma
+    upper_bound = thickness + 1.96*sigma
+
+    if upper_bound < 0:
+        raise ValueError("The upper bound of variance can not be negative! Please try different model.")
+
+    if lower_bound <= 0:
+        lower_bound == 0
+
+    return f'({lower_bound:.2f} < Z < {upper_bound:.2f}) = 0.95'
 
 if model == "spherical_model":
     sigma1 = spherical_model(Sill, Nugget, Range, distance1, distance2, total_distance)
